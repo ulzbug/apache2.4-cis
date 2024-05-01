@@ -57,9 +57,9 @@ get_distribution
 get_debian_major_version
 
 # shellcheck disable=SC2034
-APACHE2BIN=/usr/sbin/apache2
+APACHE2BIN='/usr/sbin/apache2'
 # shellcheck disable=SC2034
-APACHE2CTLBIN=/usr/sbin/apache2ctl
+APACHE2CTLBIN='/usr/sbin/apache2ctl'
 
 # shellcheck disable=SC2034
 SMALLEST_SUPPORTED_DEBIAN_VERSION=12

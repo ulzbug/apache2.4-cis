@@ -197,12 +197,12 @@ if [ "$AUDIT" -eq 0 ] && [ "$AUDIT_ALL" -eq 0 ] && [ "$AUDIT_ALL_ENABLE_PASSED" 
 fi
 
 # Source Root Dir Parameter
-if [ -r /etc/default/cis-hardening ]; then
+if [ -r /etc/default/apache2-cis-hardening ]; then
     # shellcheck source=../debian/default
-    . /etc/default/cis-hardening
+    . /etc/default/apache2-cis-hardening
 fi
 if [ -z "$CIS_LIB_DIR" ] || [ -z "${CIS_CONF_DIR}" ] || [ -z "${CIS_CHECKS_DIR}" ]; then
-    echo "There is no /etc/default/cis-hardening file nor cis-hardening directory in current environment."
+    echo "There is no /etc/default/apache2-cis-hardening file nor apache2-cis-hardening directory in current environment."
     echo "Cannot source CIS_LIB_DIR, CIS_CONF_DIR, CIS_CHECKS_DIR variables, aborting."
     exit 128
 fi
