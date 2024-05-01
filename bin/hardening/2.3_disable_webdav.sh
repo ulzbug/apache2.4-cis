@@ -17,27 +17,22 @@ HARDENING_LEVEL=2
 # shellcheck disable=2034
 DESCRIPTION="Ensure the Log Config Module Is Enabled"
 
-MODULE_NAME="log_config"
+MODULE_REGEX="dav_[[:print:]]+module"
+MODULE_NAME="webdav"
 
 # This function will be called if the script status is on enabled / audit mode
 audit() {
-	is_apache2_module_enabled "$MODULE_NAME"
+	is_apache2_module_enabled "$MODULE_REGEX"
 	if [ "$FNRET" = 0 ]; then
-		ok "$MODULE_NAME is enabled!"
+		crit "$MODULE_NAME is enabled!"
 	else
-		crit "$MODULE_NAME is disabled"
+		ok "$MODULE_NAME is disabled or not installed"
 	fi
 }
 
 # This function will be called if the script status is on enabled mode
 apply() {
-	is_apache2_module_enabled "$MODULE_NAME"
-	if [ "$FNRET" = 0 ]; then
-		ok "$MODULE_NAME is enabled!"
-	else
-		info "enabling module $MODULE_NAME"
-		a2enmod -f $MODULE_NAME
-	fi
+
 }
 
 # This function will check config parameters required

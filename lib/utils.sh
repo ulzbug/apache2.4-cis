@@ -613,15 +613,12 @@ get_apache2_version() {
 
 is_apache2_module_enabled() {
 	MODULE_NAME=$1
-    if $APACHE2CTLBIN -M | grep "$MODULE_NAME" | grep "static"; then
+    if $APACHE2CTLBIN -M | grep "$MODULE_NAME"; then
 		FNRET=0
 		debug "$MODULE_NAME is installed"
-	elif $APACHE2CTLBIN -M | grep "$MODULE_NAME" | grep "shared"; then
-		FNRET=1
-		debug "$MODULE_NAME is installed but disabled"
 	else
-		FNRET=2
-		debug "$MODULE_NAME is not installed"
+		FNRET=1
+		debug "$MODULE_NAME is not installed or disabled"
 	fi
 }
 
