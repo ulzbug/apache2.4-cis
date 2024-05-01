@@ -50,12 +50,12 @@ check_config() {
 }
 
 # Source Root Dir Parameter
-if [ -r /etc/default/cis-hardening ]; then
+if [ -r /etc/default/apache2-cis-hardening ]; then
     # shellcheck source=../../debian/default
-    . /etc/default/cis-hardening
+    . /etc/default/apache2-cis-hardening
 fi
 if [ -z "$CIS_LIB_DIR" ]; then
-    echo "There is no /etc/default/cis-hardening file nor cis-hardening directory in current environment."
+    echo "There is no /etc/default/apache2-cis-hardening file nor cis-hardening directory in current environment."
     echo "Cannot source CIS_LIB_DIR variable, aborting."
     exit 128
 fi
@@ -65,6 +65,6 @@ if [ -r "${CIS_LIB_DIR}"/main.sh ]; then
     # shellcheck source=../../lib/main.sh
     . "${CIS_LIB_DIR}"/main.sh
 else
-    echo "Cannot find main.sh, have you correctly defined your root directory? Current value is $CIS_LIB_DIR in /etc/default/cis-hardening"
+    echo "Cannot find main.sh, have you correctly defined your root directory? Current value is $CIS_LIB_DIR in /etc/default/apache2-cis-hardening"
     exit 128
 fi
