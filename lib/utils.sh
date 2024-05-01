@@ -603,15 +603,10 @@ is_running_in_container() {
 # Returns Apache2 versions
 
 get_apache2_version() {
-    APACHE2_MAJ_VER=""
-    APACHE2_MIN_VER=""
-
-	APACHE2_VERSION=$($APACHE2BIN -v | grep "Server version" | sed 's/Server version: Apache//')
-
 	# shellcheck disable=SC2034
-	APACHE2_MAJ_VER=$(cut -d '.' -f1 "$APACHE2_VERSION")
+	APACHE2_MAJ_VER=$($APACHE2BIN -v | grep "Server version" | sed 's/Server version: Apache\///' | cut -d '.' -f1)
 	# shellcheck disable=SC2034
-	APACHE2_MIN_VER=$(cut -d '.' -f2 "$APACHE2_VERSION")
+	APACHE2_MIN_VER=$($APACHE2BIN -v | grep "Server version" | sed 's/Server version: Apache\///' | cut -d '.' -f2)
 }
 
 # Returns Apache2 versions
