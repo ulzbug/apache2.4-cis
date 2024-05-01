@@ -60,6 +60,9 @@ get_debian_major_version
 APACHE2BIN='/usr/sbin/apache2'
 # shellcheck disable=SC2034
 APACHE2CTLBIN='/usr/sbin/apache2ctl'
+# shellcheck disable=SC2034
+APACHE_DIRECTORIES="/etc/apache2/ /usr/lib/apache2/ /var/lib/apache2/ /usr/share/apache2/"
+# TODO : améliorer avec APACHE_FILES=$(dpkg -L apache2)
 
 # shellcheck disable=SC2034
 SMALLEST_SUPPORTED_DEBIAN_VERSION=12

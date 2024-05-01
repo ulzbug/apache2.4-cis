@@ -6,7 +6,7 @@
 #
 
 #
-# 2.3 Ensure the WebDAV Modules Are Disabled
+# 10.2 Ensure the LimitRequestFields Directive is Set to 100 or Less
 #
 
 set -e # One error, it's over
@@ -15,21 +15,26 @@ set -u # One variable unset, it's over
 # shellcheck disable=2034
 HARDENING_LEVEL=2
 # shellcheck disable=2034
-DESCRIPTION="Ensure the WebDAV Modules Are Disabled"
-
-MODULE_REGEX="dav_[[:print:]]+module"
-MODULE_NAME="webdav"
+DESCRIPTION="Ensure the LimitRequestFields Directive is Set to 100 or "
 
 # This function will be called if the script status is on enabled / audit mode
 audit() {
-	is_apache2_module_enabled "$MODULE_REGEX"
-	if [ "$FNRET" = 0 ]; then
-		crit "$MODULE_NAME is enabled!"
+	get_apache2_conf
+
+	LIMITREQUESTFIELDS_FOUND=$(echo "$APACHE2_CONF" | grep -Ei "LimitRequestFields\s+([0-9]+)" | wc -l)
+
+	if [ "$LIMITREQUESTFIELDS_FOUND" = 0 ]; then
+		crit "LimitRequestFields directive not found"
 	else
-		ok "$MODULE_NAME is disabled or not installed"
+		LIMITREQUESTFIELDS=$(echo "$APACHE2_CONF" | grep -Eoi "LimitRequestFields\s+([0-9]+)")
+
+		if [ "$LIMITREQUESTFIELDS" -le 100 ] && [ "$LIMITREQUESTFIELDS" -gt 0 ]; then
+			ok "LimitRequestFields is present and lesser than 100"
+		else
+			crit "LimitRequestFields is present but greater than 100"
+		fi
 	fi
 }
-
 
 # This function will check config parameters required
 check_config() {

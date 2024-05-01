@@ -612,7 +612,7 @@ get_apache2_version() {
 # Returns Apache2 versions
 
 is_apache2_module_enabled() {
-	MODULE=$1
+	local MODULE=$1
     if $APACHE2CTLBIN -M | grep "$MODULE"; then
 		FNRET=0
 		debug "$MODULE is installed"
@@ -622,3 +622,103 @@ is_apache2_module_enabled() {
 	fi
 }
 
+# Returns the distribution
+
+get_apache2_all_document_root() {
+	MAIN_DOCUMENT_ROOT=$("$APACHE2CTLBIN" -t -D DUMP_RUN_CFG | grep "Main DocumentRoot:" | sed "s/Main DocumentRoot: //" | sed 's/"//g')
+	DOCUMENTS_ROOT=$(grep -R "^\s*DocumentRoot" /etc/apache2/ | cut -f 2 -d":" | sed 's/\s*DocumentRoot\s*//')
+
+	# shellcheck disable=SC2034
+	ALL_DOCUMENTS_ROOT=$(printf '%s\n%s' "$MAIN_DOCUMENT_ROOT" "$DOCUMENTS_ROOT" | sort | uniq)
+}
+
+in_array() {
+    local param=$1;
+    shift;
+    for elem in "$@";
+    do
+        if [ "$param" = "$elem" ]; then
+			FNRET=0
+		fi
+    done
+    FNRET=1
+}
+
+get_apache2_conf() {
+	# shellcheck disable=SC2034
+	APACHE2_CONF=$(grep -Rh --include \*.conf  --exclude-dir "*available*" "^[^#]" /etc/apache2/ | grep -v "^\s*#")
+}
+
+get_virtualhosts_conf() {
+	local ALL_CONF_ONE_LINE_PER_VHOSTS
+	ALL_CONF_ONE_LINE_PER_VHOSTS=$(grep -Rh --include \*.conf  --exclude-dir "*available*" "^[^#]" /etc/apache2/ | awk -F: '{$1=""}1' | grep -v "^\s*#" |  tr '\n' ' ' | sed 's#<VirtualHost#\n<VirtualHost#ig' | sed 's#</VirtualHost>#</VirtualHost>\n#ig')
+
+	# shellcheck disable=SC2034
+	VIRTUALHOSTS_CONTENT=$(echo "$ALL_CONF_ONE_LINE_PER_VHOSTS" | grep "VirtualHost" | sed -E "s#.*<VirtualHost ([^>]*)>(.*)</VirtualHost>.*#\1:\2#")
+	# shellcheck disable=SC2034
+	OUTSIDE_VIRTUALHOST_CONF=$(echo "$ALL_CONF_ONE_LINE_PER_VHOSTS" | grep -v "VirtualHost")
+}
+
+check_selinux() {
+	local SELINUX=0
+	local APPARMOR=0
+
+	is_pkg_installed "selinux-basics"
+	if [ "$FNRET" = 0 ]; then
+		SELINUX=1
+	fi
+
+	is_pkg_installed "apparmor"
+	if [ "$FNRET" = 0 ]; then
+		APPARMOR=1
+	fi
+
+	FNRET=0
+	if [ "$SELINUX" = 1 ] && [ "$APPARMOR" = 1 ]; then
+		crit "SELinux and Apparmor are both installed, choose only one"
+		FNRET=1
+	elif [ "$SELINUX" = 0 ] && [ "$APPARMOR" = 0 ]; then
+		crit "Nor SELinux, neither Apparmor are installed"
+		FNRET=2
+	elif [ "$SELINUX" = 0 ] && [ "$APPARMOR" = 1 ]; then
+		info "SELinux is not installed, but Apparmor is, please refer to section 12"
+		FNRET=3
+	elif [ "$SELINUX" = 1 ] && [ "$APPARMOR" = 0 ]; then
+		FNRET=0
+	else
+		crit "Unknown error : can't detect if SELinux or Apparmor are installed"
+		FNRET=4
+	fi
+}
+
+check_apparmor() {
+	local SELINUX=0
+	local APPARMOR=0
+
+	is_pkg_installed "selinux-basics"
+	if [ "$FNRET" = 0 ]; then
+		SELINUX=1
+	fi
+
+	is_pkg_installed "apparmor"
+	if [ "$FNRET" = 0 ]; then
+		APPARMOR=1
+	fi
+
+	FNRET=0
+	if [ "$SELINUX" = 1 ] && [ "$APPARMOR" = 1 ]; then
+		crit "SELinux and Apparmor are both installed, choose only one"
+		FNRET=1
+	elif [ "$SELINUX" = 0 ] && [ "$APPARMOR" = 0 ]; then
+		crit "Nor SELinux, neither Apparmor are installed"
+		FNRET=2
+	elif [ "$SELINUX" = 1 ] && [ "$APPARMOR" = 0 ]; then
+		info "Apparmor is not installed, but SELinux is, please refer to section 11"
+		FNRET=3
+	elif [ "$SELINUX" = 0 ] && [ "$APPARMOR" = 1 ]; then
+		FNRET=0
+	else
+		crit "Unknown error : can't detect if SELinux or Apparmor are installed"
+		FNRET=4
+	fi
+}

@@ -9,20 +9,24 @@ These scripts have been tested on Debian 12, but they should work on Debian 10 o
 ```console
 $ bin/hardening.sh --audit-all
 [...]
-hardening [INFO] Treating /opt/cis-hardening/bin/hardening/6.2.19_check_duplicate_groupname.sh
-6.2.19_check_duplicate_gr [INFO] Working on 6.2.19_check_duplicate_groupname
-6.2.19_check_duplicate_gr [INFO] Checking Configuration
-6.2.19_check_duplicate_gr [INFO] Performing audit
-6.2.19_check_duplicate_gr [ OK ] No duplicate GIDs
-6.2.19_check_duplicate_gr [ OK ] Check Passed
+hardening                 [INFO] Treating /opt/apache2.4-cis/bin/hardening/3.4_directories_owned_by_root.sh
+3.4_directories_owned_by_ [INFO] Working on 3.4_directories_owned_by_root
+3.4_directories_owned_by_ [INFO] [DESCRIPTION] Ensure Apache Directories and Files Are Owned By Root
+3.4_directories_owned_by_ [INFO] Checking Configuration
+3.4_directories_owned_by_ [INFO] Performing audit
+3.4_directories_owned_by_ [ OK ] Directory /etc/apache2/ : all files are owned by root
+3.4_directories_owned_by_ [ OK ] Directory /usr/lib/apache2/ : all files are owned by root
+3.4_directories_owned_by_ [ OK ] Directory /var/lib/apache2/ : all files are owned by root
+3.4_directories_owned_by_ [ OK ] Directory /usr/share/apache2/ : all files are owned by root
+3.4_directories_owned_by_ [ OK ] Check Passed
 [...]
 ################### SUMMARY ###################
-      Total Available Checks : 232
-         Total Runned Checks : 166
-         Total Passed Checks : [ 142/166 ]
-         Total Failed Checks : [  24/166 ]
-   Enabled Checks Percentage : 71.00 %
-       Conformity Percentage : 85.00 %
+      Total Available Checks : 72
+         Total Runned Checks : 72
+         Total Passed Checks : [   40/72 ]
+         Total Failed Checks : [   32/72 ]
+   Enabled Checks Percentage : 100.00 %
+       Conformity Percentage : 55.55 %
 ```
 
 ## :dizzy: Quickstart
@@ -34,13 +38,13 @@ $ sed -i "s#CIS_LIB_DIR=.*#CIS_LIB_DIR='$(pwd)'/lib#" /etc/default/apache2-cis-h
 $ sed -i "s#CIS_CHECKS_DIR=.*#CIS_CHECKS_DIR='$(pwd)'/bin/hardening#" /etc/default/apache2-cis-hardening
 $ sed -i "s#CIS_CONF_DIR=.*#CIS_CONF_DIR='$(pwd)'/etc#" /etc/default/apache2-cis-hardening
 $ sed -i "s#CIS_TMP_DIR=.*#CIS_TMP_DIR='$(pwd)'/tmp#" /etc/default/apache2-cis-hardening
-$ ./bin/hardening/1.1.1.1_disable_freevxfs.sh --audit
-1.1.1.1_disable_freevxfs  [INFO] Working on 1.1.1.1_disable_freevxfs
-1.1.1.1_disable_freevxfs  [INFO] [DESCRIPTION] Disable mounting of freevxfs filesystems.
-1.1.1.1_disable_freevxfs  [INFO] Checking Configuration
-1.1.1.1_disable_freevxfs  [INFO] Performing audit
-1.1.1.1_disable_freevxfs  [ OK ] CONFIG_VXFS_FS is disabled
-1.1.1.1_disable_freevxfs  [ OK ] Check Passed
+$ ./bin/hardening/2.2_enable_log_config_module.sh --audit
+2.2_enable_log_config_mod [INFO] Working on 2.2_enable_log_config_module
+2.2_enable_log_config_mod [INFO] [DESCRIPTION] Ensure the Log Config Module Is Enabled
+2.2_enable_log_config_mod [INFO] Checking Configuration
+2.2_enable_log_config_mod [INFO] Performing audit
+2.2_enable_log_config_mod [ OK ] log_config is enabled!
+2.2_enable_log_config_mod [ OK ] Check Passed
 ```
 
 ## :hammer: Usage
@@ -63,7 +67,6 @@ EXCEPTIONS=""
 ``status`` parameter may take 3 values:
 - ``disabled`` (do nothing): The script will not run.
 - ``audit`` (RO): The script will check if any change *should* be applied.
-- ``enabled`` (RW): The script will check if any change should be done and automatically apply what it can.
 
 Global configuration is in ``etc/hardening.cfg``. This file controls the log level
 as well as the backup directory. Whenever a script is instructed to edit a file, it
@@ -75,7 +78,7 @@ To run the checks and apply the fixes, run ``bin/hardening.sh``.
 
 This command has 2 main operation modes:
 - ``--audit``: Audit your system with all enabled and audit mode scripts
-- ``--apply``: Audit your system with all enabled and audit mode scripts and apply changes for enabled scripts
+- ``--apply``: Audit your system with all enabled and audit mode scripts and apply changes for enabled scripts ( not implemented )
 
 Additionally, some options add more granularity:
 
