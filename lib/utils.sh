@@ -612,13 +612,13 @@ get_apache2_version() {
 # Returns Apache2 versions
 
 is_apache2_module_enabled() {
-	MODULE_NAME=$1
-    if $APACHE2CTLBIN -M | grep "$MODULE_NAME"; then
+	MODULE=$1
+    if $APACHE2CTLBIN -M | grep "$MODULE"; then
 		FNRET=0
-		debug "$MODULE_NAME is installed"
+		debug "$MODULE is installed"
 	else
 		FNRET=1
-		debug "$MODULE_NAME is not installed or disabled"
+		debug "$MODULE is not installed or disabled"
 	fi
 }
 

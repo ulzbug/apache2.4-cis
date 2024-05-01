@@ -2,7 +2,7 @@
 
 # run-shellcheck
 #
-# CIS Debian Hardening
+# Apache 2.4 CIS Hardening
 #
 
 #

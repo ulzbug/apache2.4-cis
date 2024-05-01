@@ -2,11 +2,11 @@
 
 # run-shellcheck
 #
-# CIS Debian Hardening
+# Apache 2.4 CIS Hardening
 #
 
 #
-# 2.2 Ensure the Log Config Module Is Enabled
+# 2.3 Ensure the WebDAV Modules Are Disabled
 #
 
 set -e # One error, it's over
@@ -15,7 +15,7 @@ set -u # One variable unset, it's over
 # shellcheck disable=2034
 HARDENING_LEVEL=2
 # shellcheck disable=2034
-DESCRIPTION="Ensure the Log Config Module Is Enabled"
+DESCRIPTION="Ensure the WebDAV Modules Are Disabled"
 
 MODULE_REGEX="dav_[[:print:]]+module"
 MODULE_NAME="webdav"
