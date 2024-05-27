@@ -123,7 +123,7 @@ LOGLEVEL in /etc/hardening.cfg
 ## :heavy_exclamation_mark: Disclaimer
 
 This project is a set of tools. They are meant to help the system administrator
-built a secure environment. While we use it at OVHcloud to harden our PCI-DSS compliant
+built a secure environment. While we use it to harden our PCI-DSS compliant
 infrastructure, we can not guarantee that it will work for you. It will not
 magically secure any random host.
 
@@ -138,15 +138,15 @@ As a consequence, please do not worry about numbering, the checks are there,
 but the numbering accross PDFs might differ.
 Please also note that all the check inside CIS Benchmark PDF might not be implemented
 in this set of scripts.
-We did choose the most relevant to us at OVHcloud, do not hesitate to make a
+We did choose the most relevant to us, do not hesitate to make a
 Pull Request in order to add the missing script you might find relevant for you.
 
 Additionally, quoting the License:
 
-> THIS SOFTWARE IS PROVIDED BY OVH SAS AND CONTRIBUTORS ``AS IS'' AND ANY
+> THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY
 > EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 > WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-> DISCLAIMED. IN NO EVENT SHALL OVHcloud SAS AND CONTRIBUTORS BE LIABLE FOR ANY
+> DISCLAIMED. IN NO EVENT SHALL BE LIABLE FOR ANY
 > DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 > (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 > LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
