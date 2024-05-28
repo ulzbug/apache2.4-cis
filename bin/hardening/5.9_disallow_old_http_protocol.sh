@@ -21,7 +21,7 @@ DESCRIPTION="Ensure Old HTTP Protocol Versions Are Disallowed"
 audit() {
 	get_virtualhosts_conf
 
-	DISALLOW_HTTP1_FOUND=$(echo "$OUTSIDE_VIRTUALHOST_CONF" | grep -iE "RewriteEngine\s*On\s*RewriteCond\s*%{THE_REQUEST}\s*\!HTTP/1\\\.1\\$\s*RewriteRule\s*\.\* - [F]" | wc -l)
+	DISALLOW_HTTP1_FOUND=$(echo "$OUTSIDE_VIRTUALHOST_CONF" | grep -iE "RewriteEngine\s*On\s*RewriteCond\s*%{THE_REQUEST}\s*\!HTTP/1\\\.1\\$\s*RewriteRule\s*\.\* - \[F\]" | wc -l)
 	if [ "$DISALLOW_HTTP1_FOUND" = 0 ]; then
 		crit "Old HTTP protocol versions are not disallowed"
 	else
