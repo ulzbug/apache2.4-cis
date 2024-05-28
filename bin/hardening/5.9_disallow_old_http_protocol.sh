@@ -27,6 +27,13 @@ audit() {
 	else
 		ok "Old HTTP protocol versions are disallowed"
 	fi
+
+	SETTINGS_INHERITED_FOUND=$(echo "$OUTSIDE_VIRTUALHOST_CONF" | grep -iE "RewriteEngine\s*On\s*RewriteOptions\s*Inherit" | wc -l)
+	if [ "$SETTINGS_INHERITED_FOUND" = 0 ]; then
+		crit "Main server settings will not be inherited"
+	else
+		ok "Main server settings will be inherited"
+	fi
 }
 
 
