@@ -19,12 +19,12 @@ DESCRIPTION="Ensure the HTTP TRACE Method Is Disabled"
 
 # This function will be called if the script status is on enabled / audit mode
 audit() {
+	get_apache2_conf
 
-	get_virtualhosts_conf
+	CONTAIN_TRACEENABLE_OFF=$(echo "$APACHE2_CONF" | grep -Ei "TraceEnable\s*off" | wc -l)
+	CONTAIN_TRACEENABLE_ON=$(echo "$APACHE2_CONF" | grep -Ei "TraceEnable\s*on" | wc -l)
 
-	CONTAIN_TRACEENABLE=$(echo "$OUTSIDE_VIRTUALHOST_CONF" | grep -i "TraceEnable\s*off" | wc -l)
-
-	if [ "$CONTAIN_TRACEENABLE" = 0 ]; then
+	if [ "$CONTAIN_TRACEENABLE_OFF" = 0 ] || [ "$CONTAIN_TRACEENABLE_ON" -gt 0 ]; then
 		crit "Trace Method is enable"
 	else
 		ok "Trace Method is disable"
