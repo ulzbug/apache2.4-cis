@@ -651,7 +651,7 @@ get_apache2_conf() {
 
 get_virtualhosts_conf() {
 	local ALL_CONF_ONE_LINE_PER_VHOSTS
-	ALL_CONF_ONE_LINE_PER_VHOSTS=$(grep -Rh --include \*.conf  --exclude-dir "*available*" "^[^#]" /etc/apache2/ | awk -F: '{$1=""}1' | grep -v "^\s*#" |  tr '\n' ' ' | sed 's#<VirtualHost#\n<VirtualHost#ig' | sed 's#</VirtualHost>#</VirtualHost>\n#ig')
+	ALL_CONF_ONE_LINE_PER_VHOSTS=$(grep -Rh --include \*.conf  --exclude-dir "*available*" "^[^#]" /etc/apache2/ | grep -v "^\s*#" |  tr '\n' ' ' | sed 's#<VirtualHost#\n<VirtualHost#ig' | sed 's#</VirtualHost>#</VirtualHost>\n#ig')
 
 	# shellcheck disable=SC2034
 	VIRTUALHOSTS_CONTENT=$(echo "$ALL_CONF_ONE_LINE_PER_VHOSTS" | grep "VirtualHost" | sed -E "s#.*<VirtualHost ([^>]*)>(.*)</VirtualHost>.*#\1:\2#")
