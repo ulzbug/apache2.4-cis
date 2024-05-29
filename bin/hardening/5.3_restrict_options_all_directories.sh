@@ -40,7 +40,7 @@ audit() {
 		if [ "$CONTAIN_OPTIONS" = 0 ]; then
 			crit "Directive Options is not present in the directory element : $DIRECTORY"
 			ERROR=1
-		elif [ "$CONTAIN_OPTIONS_INCLUDE" -eq 0 ]; then
+		elif [ "$CONTAIN_OPTIONS_INCLUDE" -ne 0 ]; then
 			crit "Directive Options contains 'Includes' in the directory element : $DIRECTORY"
 			ERROR=1
 		elif [ "$CONTAIN_OPTIONS_NONE" -eq 0 ]; then
